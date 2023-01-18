@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author florin.cofei
+ * @author florin.cofei new git
  */
 public class buyForm extends javax.swing.JFrame {
 
