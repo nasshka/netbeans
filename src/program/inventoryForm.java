@@ -48,15 +48,19 @@ public class inventoryForm extends javax.swing.JFrame {
         categoryBox = new javax.swing.JComboBox<>();
         refreshCategory = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        addNew = new javax.swing.JButton();
         buyButton = new javax.swing.JButton();
         sellButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        addNew = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tabel1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(100, 30, 1234, 644));
-        setPreferredSize(new java.awt.Dimension(1234, 644));
+        setPreferredSize(new java.awt.Dimension(1000, 644));
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -65,7 +69,13 @@ public class inventoryForm extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(600, 892));
+        jTabbedPane1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jTabbedPane1FocusGained(evt);
+            }
+        });
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 720));
 
         tabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         tabel.setModel(new javax.swing.table.DefaultTableModel(
@@ -97,13 +107,6 @@ public class inventoryForm extends javax.swing.JFrame {
             }
         });
 
-        addNew.setText("Add New Product");
-        addNew.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addNewActionPerformed(evt);
-            }
-        });
-
         buyButton.setText("Buy");
         buyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,17 +130,13 @@ public class inventoryForm extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(sellButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buyButton, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(addNew)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buyButton)
-                    .addComponent(addNew))
+                .addComponent(buyButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(sellButton)
                 .addContainerGap(68, Short.MAX_VALUE))
@@ -171,7 +170,19 @@ public class inventoryForm extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jButton1.setText("jButton1");
+        addNew.setText("Add New Product");
+        addNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addNewActionPerformed(evt);
+            }
+        });
+
+        deleteButton.setText("DELETE");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -182,36 +193,91 @@ public class inventoryForm extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 133, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(addNew, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 24, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jButton1)))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(addNew)
+                        .addGap(18, 18, 18)
+                        .addComponent(deleteButton)))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Current Inventory", jPanel1);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        tabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        tabel1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabel1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tabel1.setMaximumSize(new java.awt.Dimension(60, 80));
+        tabel1.setMinimumSize(new java.awt.Dimension(60, 60));
+        jScrollPane2.setViewportView(tabel1);
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1006, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1100, Short.MAX_VALUE)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 892, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 251, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("tab2", jPanel3);
+        jTabbedPane1.addTab("Transactions", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -263,6 +329,18 @@ public class inventoryForm extends javax.swing.JFrame {
     private void sellButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sellButtonActionPerformed
                     sellForm asd=new sellForm();// TODO add your handling code here:
     }//GEN-LAST:event_sellButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        deleteRow();
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void jTabbedPane1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTabbedPane1FocusGained
+        try {
+            buildTransactionTableonstart();
+        } catch (SQLException ex) {
+            Logger.getLogger(inventoryForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTabbedPane1FocusGained
     public void updateCategories() {
         dbConnection conn=new dbConnection();
         ArrayList<String> listaCategorii=conn.getAllCategories();
@@ -290,9 +368,9 @@ public class inventoryForm extends javax.swing.JFrame {
 
        };
     tabel.setModel(model);
-    
+    tabel.getColumnModel().getColumn(0).setPreferredWidth(0);
     int nrColoane=columnName.length;
-    for (int i=0;i<nrColoane;i++){tabel.getColumnModel().getColumn(i).setPreferredWidth(120);}
+    for (int i=1;i<nrColoane;i++){tabel.getColumnModel().getColumn(i).setPreferredWidth(120);}
     
     }
     public void buildTableonstart() throws SQLException{
@@ -310,11 +388,45 @@ public class inventoryForm extends javax.swing.JFrame {
             }
 
        };
+    
     tabel.setModel(model);
-    
+    //tabel.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+    tabel.getColumnModel().getColumn(0).setPreferredWidth(0);
     int nrColoane=columnName.length;
-    for (int i=0;i<nrColoane;i++){tabel.getColumnModel().getColumn(i).setPreferredWidth(120);}
+    for (int i=1;i<nrColoane;i++){tabel.getColumnModel().getColumn(i).setPreferredWidth(120);}
     
+    }
+    public void buildTransactionTableonstart() throws SQLException{
+    
+    String query="";
+    dbConnection conn=new dbConnection();    
+    Object[][] data=conn.getTransactions(query);
+    String[] columnName=conn.getCols();
+    modelTransactions= new DefaultTableModel(data, columnName){
+    @Override
+    public void setValueAt(Object aValue, int row, int column) {
+          String qry= "UPDATE transactions SET "+columnName[column]+"='"+aValue.toString()+"' WHERE Nrcrt ="+model.getValueAt(row, 0)+";";     
+                conn.updateInventory(qry);
+                super.setValueAt(aValue, row, column);
+            }
+
+       };
+    tabel1.setModel(modelTransactions);
+    tabel1.getColumnModel().getColumn(0).setPreferredWidth(0);
+    int nrColoane=columnName.length;
+    for (int i=1;i<nrColoane;i++){tabel1.getColumnModel().getColumn(i).setPreferredWidth(120);}
+    
+    }
+    
+    public void deleteRow(){
+        int i = Integer.valueOf((String) tabel.getValueAt(tabel.getSelectedRow(), 0));
+        dbConnection asd=new dbConnection();
+        asd.deleteProduct(i);
+        try {
+            buildTableonstart();
+        } catch (SQLException ex) {
+            Logger.getLogger(inventoryForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     /**
      * @param args the command line arguments
@@ -355,17 +467,22 @@ public class inventoryForm extends javax.swing.JFrame {
     private javax.swing.JButton addNew;
     private javax.swing.JButton buyButton;
     private javax.swing.JComboBox<String> categoryBox;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton refreshCategory;
     private javax.swing.JButton sellButton;
     private javax.swing.JTable tabel;
+    private javax.swing.JTable tabel1;
     // End of variables declaration//GEN-END:variables
    DefaultTableModel model ;
+   DefaultTableModel modelTransactions ;
 }

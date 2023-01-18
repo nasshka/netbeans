@@ -187,6 +187,51 @@ public class dbConnection {
              
              return data;     
            } 
+    public  Object[][] getTransactions (String query) throws SQLException {
+             int nrColoane;
+             int nrRanduri;
+             ArrayList<List> listaInLista=new ArrayList<List>();
+             Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             ResultSet nc    = stmt.executeQuery("SELECT * FROM transactions LIMIT 0");
+             ResultSetMetaData asd=nc.getMetaData();
+             nrColoane = asd.getColumnCount(); //se aflla nr coloane
+             columnName=new String[nrColoane]; 
+             
+             for (int i=0;i<nrColoane;i++){
+                     columnName[i]=asd.getColumnName(i+1);//se adauga umele coloanei la String list[]
+                    
+             }//s-a creat lista cu coloanele pt Obiectul raportului
+             ResultSet nrC  = stmt.executeQuery("SELECT count(*) FROM transactions "+query);
+             nrRanduri=nrC.getInt(1); //se afla nr randuri
+             
+             //initializam lista de randuri cu valori ne-nule;
+             
+             ResultSet getRows  = stmt.executeQuery("SELECT * FROM transactions "+query);
+             while (getRows.next()) {
+                               ArrayList tempList=new ArrayList<String>();
+                              for (int i=0;i<nrColoane;i++){
+                                  
+                                  String val=getRows.getString(columnName[i]);
+                                  if (val!=null){     
+                                     tempList.add(val);}else{tempList.add("");}
+                        //se completeaza temp list cu cate un rand cu valori
+                              }
+                              listaInLista.add(tempList);
+                        //se adauga randul de valori la lista mare
+                    }
+            //S-au creat ambele liste-->se poate merge la obiect si afisare tabel
+           
+            Object[][] data=new Object[listaInLista.size()][nrColoane];//[312][35]
+    
+             for(int rand=0;rand<listaInLista.size();rand++) {
+                              for (int col=0;col<nrColoane;col++ ){
+                                  data[rand][col]=listaInLista.get(rand).get(col);
+                              }
+                }
+             
+             return data;     
+           } 
     public String[] getCols(){return columnName;}
     public void updateInventory(String query){
     try {
@@ -291,6 +336,17 @@ public class dbConnection {
             System.out.println(e.getMessage());
              }
             }
+    public void deleteProduct (int nrcrt){
+           int dialogButton = JOptionPane.showConfirmDialog (null, "Are you sure you want to delete this product?","WARNING",JOptionPane.YES_NO_OPTION);
+           if(dialogButton == JOptionPane.YES_OPTION) {
+           try {
+            Connection conn = this.connect();
+             Statement stmt  = conn.createStatement();
+             stmt.executeUpdate("DELETE FROM inventar WHERE Nrcrt='"+nrcrt+"' ");
+             } catch (SQLException e) {  System.out.println(e.getMessage());   }
+             }else {}
+           
+    }
     public void buyProduct (String Item, Double Quantity,Double purchaseCost){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
         Date date = new Date();  
@@ -335,7 +391,7 @@ public class dbConnection {
              }
          
     }
-    public void sellProduct (String Item, Double Quantity,Double purchaseCost){
+    public void sellProduct (String Item, Double Quantity,Double sellCost,String PaymentType){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");  
         Date date = new Date();  
         Timestamp ts=new Timestamp(date.getTime()); 
@@ -359,7 +415,7 @@ public class dbConnection {
             Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
               
-           stmt.executeUpdate("UPDATE inventar SET StockQuantity="+oldquantity+" ,PurchaseCost="+purchaseCost+" WHERE Item='"+Item+"'  ");
+           stmt.executeUpdate("UPDATE inventar SET StockQuantity="+oldquantity+" ,SellingCost="+sellCost+" WHERE Item='"+Item+"'  ");
           
             }
            
@@ -371,7 +427,7 @@ public class dbConnection {
             Connection conn = this.connect();
             Statement stmt  = conn.createStatement();
               System.out.println(ts);  
-          stmt.executeUpdate("INSERT INTO transactions (Category,Item,ItemCode,TransactionType,BuyPrice,SellPrice,Quantity,TransactionDate) VALUES ('"+category+"','"+Item+"','"+itemCode+"','SELL','0',"+purchaseCost+","+Quantity+",'"+ts+"') ");
+          stmt.executeUpdate("INSERT INTO transactions (Category,Item,ItemCode,TransactionType,BuyPrice,SellPrice,Quantity,PaymentMethod,TransactionDate) VALUES ('"+category+"','"+Item+"','"+itemCode+"','SELL','0',"+sellCost+","+Quantity+",'"+PaymentType+"','"+ts+"') ");
            JOptionPane.showMessageDialog(null, "Transaction Completed"); }
            
            catch (SQLException e) {
@@ -382,14 +438,16 @@ public class dbConnection {
     public ArrayList<String> getProdDetails (String Item){
            ArrayList<String> lista=new ArrayList<>();
            Double purchaseCost=0.0;
+           Double sellCost=0.0;
            String itemCode="";
         
        try (Connection conn = this.connect();
              Statement stmt  = conn.createStatement();
-             ResultSet getstats    = stmt.executeQuery("SELECT ItemCode,PurchaseCost FROM inventar WHERE Item='"+Item+"'  ")){
+             ResultSet getstats    = stmt.executeQuery("SELECT ItemCode,PurchaseCost,SellingCost FROM inventar WHERE Item='"+Item+"'  ")){
              purchaseCost=getstats.getDouble("PurchaseCost");
+             sellCost=getstats.getDouble("SellingCost");
              itemCode=getstats.getString("ItemCode");
-             lista.add(itemCode);lista.add(String.valueOf(purchaseCost));
+             lista.add(itemCode);lista.add(String.valueOf(purchaseCost));lista.add(String.valueOf(sellCost));
            } 
        catch (SQLException e) {
             System.out.println(e.getMessage());
